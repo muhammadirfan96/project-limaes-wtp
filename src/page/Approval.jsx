@@ -199,6 +199,20 @@ const Approval = () => {
     );
   }
 
+  const mainUnitView = ["alba", "boiler", "turbine", "pltg"];
+  const cahView = [
+    "c1ab",
+    "c2ab",
+    "c3a",
+    "c3b",
+    "c4ab",
+    "c5ab",
+    "c6ab",
+    "c7ab",
+    "coal feeder",
+  ];
+  const wtpView = ["wtp", "lab"];
+
   // data with status 0
   const [dataStatus1, setDataStatus1] = useState([]);
 
@@ -214,6 +228,13 @@ const Approval = () => {
         }),
         ...(role.includes("-") && {
           bidang_unit: [role.split("-")[1]],
+          lokasi_area: userlimaes.fullname.includes("main unit")
+            ? mainUnitView
+            : userlimaes.fullname.includes("cah")
+              ? cahView
+              : userlimaes.fullname.includes("wtp")
+                ? wtpView
+                : [],
         }),
         status: [status],
         // evidence: true,

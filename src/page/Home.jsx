@@ -124,6 +124,27 @@ const Home = () => {
     if (userlimaes && unitView && areaView) fetchScheduleLimaes();
   }, [userlimaes, unitView, areaView]);
 
+  // TITLE AREA
+  let titleArea = "";
+  if (role && userlimaes) {
+    const jabatan = userlimaes.bagianlimaes?.jabatan || "";
+    const fullname = userlimaes.fullname || "";
+
+    if (role === "user") {
+      if (jabatan.includes("main unit")) titleArea = "main unit";
+      else if (jabatan.includes("cah")) titleArea = "cah";
+      else if (jabatan.includes("wtp") || jabatan.includes("operator lab"))
+        titleArea = "wtp";
+    } else if (role.includes("-")) {
+      if (fullname.includes("main unit")) titleArea = "main unit";
+      else if (fullname.includes("cah")) titleArea = "cah";
+      else if (fullname.includes("wtp") || fullname.includes("operator lab"))
+        titleArea = "wtp";
+    } else if (role === "admin") {
+      titleArea = areaView;
+    }
+  }
+
   // ============================
   // VIEW JIKA BELUM LOGIN
   // ============================
@@ -207,24 +228,7 @@ const Home = () => {
         {/* Left: Title */}
         <div>
           <h1 className="text-2xl font-extrabold uppercase tracking-wide text-slate-800">
-            {unitView}-
-            {userlimaes.bagianlimaes.jabatan.includes("main unit")
-              ? "main unit"
-              : userlimaes.bagianlimaes.jabatan.includes("cah")
-                ? "cah"
-                : userlimaes.bagianlimaes.jabatan.includes("wtp") ||
-                    userlimaes.bagianlimaes.jabatan.includes("operator lab")
-                  ? "wtp"
-                  : areaView}
-            {userlimaes.users.role.includes("admin") &&
-              userlimaes.fullname.includes("main unit") &&
-              "main unit"}
-            {userlimaes.users.role.includes("admin") &&
-              userlimaes.fullname.includes("cah") &&
-              "cah"}
-            {userlimaes.users.role.includes("admin") &&
-              userlimaes.fullname.includes("wtp") &&
-              "wtp"}
+            {unitView}-{titleArea}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
             {new Date().toLocaleDateString("id-ID", {
